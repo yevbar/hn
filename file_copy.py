@@ -9,7 +9,7 @@ import random
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium import webdriver
 
-s.environ["MOZ_HEADLESS"]="1"
+os.environ["MOZ_HEADLESS"]="1"
 binary = FirefoxBinary("/usr/lib/firefox/firefox", log_file=sys.stdout)
 driver = webdriver.Firefox(firefox_binary=binary)
 
@@ -28,9 +28,9 @@ keyboard_chars = "qwertyuiopasdfghjklzxcvbnm0123456789"
 def firefox():
 	driver.get("https://news.ycombinator.com/login")
 	generated_value = ''.join(random.choice(keyboard_chars) for _ in range(12))
-	element = driver.get_element_by_name("acct")
+	element = driver.get_element_by_xpath("//input[@type=password and @name='acct'"[0])
 	element.send_keys(generated_value)
-	element = driver,get_element_by_name("pw")
+	element = driver.get_element_by_xpath("//input[@type='text' and @name='pw']"[1])
 	element.send_keys(generated_value)
 	button = driver.get_element_by_xpath("//input[@type='submit' and @value='create account']")
 	button.click()
