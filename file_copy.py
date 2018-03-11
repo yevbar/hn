@@ -25,28 +25,22 @@ cur_ip = None
 ua = UserAgent()
 keyboard_chars = "qwertyuiopasdfghjklzxcvbnm0123456789"
 
+def firefox():
+	driver.get("https://news.ycombinator.com/login")
+	generated_value = ''.join(random.choice(keyboard_chars) for _ in range(12))
+	element = driver.get_element_by_name("acct")
+	element.send_keys(generated_value)
+	element = driver,get_element_by_name("pw")
+	element.send_keys(generated_value)
+	button = driver.get_element_by_xpath("//input[@type='submit' and @value='create account']")
+	button.click()
+	print driver.page_source
+
 while (True):
         cur_ip = requests.get("http://icanhazip.com/", proxies={"http": "127.0.0.1:8118"}).text.strip()
         if cur_ip not in ip_list:
                 ip_list.append(cur_ip)
-                my_session = requests.session()
-                new_account_url = "https://news.ycombinator.com/login?goto=newest"
-                generated_value = ''.join(random.choice(keyboard_chars) for _ in range(12))
-                result = my_session.get(new_account_url)
-                data_ = {
-                        "acct": generated_value,
-                        "creating": "t",
-                        "goto": "newest",
-                        "pw": generated_value
-                }
-                result = my_session.post(
-                        "https://news.ycombinator.com/login",
-                        data = data_,
-                        headers = {
-                                "referer": new_account_url,
-                                "User-Agent": ua.chrome
-                        }
-                )
+                firefox()
                 print cur_ip + " | " + generated_value
                 print "\n\n"
                 print result.text.strip()
